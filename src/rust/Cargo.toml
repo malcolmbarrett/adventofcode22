@@ -1,0 +1,11 @@
+[package]
+name = 'adventofcode22'
+version = '0.1.0'
+edition = '2021'
+
+[lib]
+crate-type = [ 'staticlib' ]
+name = 'adventofcode22'
+
+[dependencies]
+extendr-api = '*'
