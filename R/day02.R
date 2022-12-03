@@ -92,8 +92,15 @@ f02a <- function(path) {
 
 #' @rdname day02
 #' @export
-f02b <- function(x) {
+f02b <- function(path) {
+  df <- readr::read_delim(
+    path,
+    delim = " ",
+    col_names = FALSE,
+    show_col_types = FALSE
+  )
 
+  day_two_b(df[[1]], df[[2]])
 }
 
 

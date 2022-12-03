@@ -9,15 +9,15 @@
 \usage{
 f02a(path)
 
-f02b(x)
+f02b(path)
 
 example_data_02(example = 1)
 }
 \arguments{
-\item{x}{some data}
-
 \item{example}{Which example data to use (by position or name). Defaults to
 1.}
+
+\item{x}{some data}
 }
 \value{
 For Part One, \code{f02a(x)} returns .... For Part Two,

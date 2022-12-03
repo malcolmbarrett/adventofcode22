@@ -20,3 +20,7 @@ day_one_b <- function(input) .Call(wrap__day_one_b, input)
 #' @export
 day_two_a <- function(theirs, mine) .Call(wrap__day_two_a, theirs, mine)
 
+#' Calculate the solution to 2-a
+#' @export
+day_two_b <- function(theirs, mine) .Call(wrap__day_two_b, theirs, mine)
+

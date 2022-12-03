@@ -69,57 +69,106 @@ fn day_one_b(input: Vec<i32>) -> i32 {
 /// @export
 #[extendr]
 fn day_two_a(theirs: Vec<String>, mine: Vec<String>) -> i32 {
-  let their_score: Vec<i32> = theirs
-    .iter()
-    .map(|x| as_points(x))
-    .collect();
-
-  let my_score: Vec<i32> = mine
-    .iter()
-    .map(|x| as_points(x))
-    .collect();
+  let their_score = to_points(theirs);
+  let my_score = to_points(mine);
 
   let game_score: Vec<i32> = their_score
     .into_iter()
     .zip(my_score.into_iter())
-    .map(|(x, y)| {
-      let score = match x {
-        1 => {
-          if y == 1 {
-            y + 3
-          } else if y == 2 {
-            y + 6
-          } else {
-            y
-          }
-        },
-        2 => {
-          if y == 1 {
-            y
-          } else if y == 2 {
-            y + 3
-          } else {
-            y + 6
-          }
-        },
-        3 => {
-          if y == 1 {
-            y + 6
-          } else if y == 2 {
-            y
-          } else {
-            y + 3
-          }
-        },
-        _ => panic!("You're playing wrong!")
-      };
-
-      score
-    }).collect();
+    .map(|(x, y)| get_score(x, y))
+    .collect();
 
     game_score
       .iter()
       .sum()
+}
+
+/// Calculate the solution to 2-b
+/// @export
+#[extendr]
+fn day_two_b(theirs: Vec<String>, mine: Vec<String>) -> i32 {
+  let their_score = to_points(theirs);
+  let my_score = to_points(mine);
+
+  let game_score: Vec<i32> = their_score
+    .into_iter()
+    .zip(my_score.into_iter())
+    .map(|(x, y)| get_strategy(x, y))
+    .map(|(x, y)| get_score(x, y))
+    .collect();
+
+    game_score
+      .iter()
+      .sum()
+}
+
+fn to_points(letters: Vec<String>) -> Vec<i32> {
+  letters
+    .iter()
+    .map(|x| as_points(x))
+    .collect()
+}
+
+fn get_strategy(x: i32, y: i32) -> (i32, i32) {
+  if y == 1 {
+    // lose
+    let call = match x {
+      1 => 3,
+      2 => 1,
+      3 => 2,
+      _ => panic!("you're playing wrong!")
+    };
+
+    (x, call)
+  } else if y == 2 {
+  // draw
+    (x, x)
+  } else {
+    //win
+    let call = match x {
+      1 => 2,
+      2 => 3,
+      3 => 1,
+      _ => panic!("you're playing wrong!")
+    };
+
+    (x, call)
+  }
+}
+
+fn get_score(x: i32, y: i32) -> i32 {
+  let score = match x {
+    1 => {
+      if y == 1 {
+        y + 3
+      } else if y == 2 {
+        y + 6
+      } else {
+        y
+      }
+    },
+    2 => {
+      if y == 1 {
+        y
+      } else if y == 2 {
+        y + 3
+      } else {
+        y + 6
+      }
+    },
+    3 => {
+      if y == 1 {
+        y + 6
+      } else if y == 2 {
+        y
+      } else {
+        y + 3
+      }
+    },
+    _ => panic!("You're playing wrong!")
+  };
+
+  score
 }
 
 /// Calculate the solution to 2-a
@@ -188,4 +237,5 @@ extendr_module! {
     fn day_one_a;
     fn day_one_b;
     fn day_two_a;
+    fn day_two_b;
 }
