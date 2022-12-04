@@ -279,6 +279,61 @@ fn day_three_b(contents: Vec<String>) -> i32 {
     .sum()
 }
 
+
+/// Calculate the solution to 4-a
+/// @export
+#[extendr]
+fn day_four_a(first: Vec<String>, second: Vec<String>) -> i32 {
+  let first = split_string(first);
+  let second = split_string(second);
+
+  first
+    .iter()
+    .zip(second.iter())
+    .filter(|(a, b)| {
+      let range_a = a.0..a.1+1;
+      let range_b = b.0..b.1+1;
+
+      let condition = range_a.contains(&b.0) && range_a.contains(&b.1) ||
+        range_b.contains(&a.0) && range_b.contains(&a.1);
+
+      rprintln!("{condition}: ({:?}, {:?})", a, b);
+      condition
+    })
+    .count() as i32
+}
+
+/// Calculate the solution to 4-a
+/// @export
+#[extendr]
+fn day_four_b(first: Vec<String>, second: Vec<String>) -> i32 {
+  let first = split_string(first);
+  let second = split_string(second);
+
+  first
+    .iter()
+    .zip(second.iter())
+    .filter(|(a, b)| {
+      let range_a = a.0..a.1+1;
+      let range_b = b.0..b.1+1;
+
+      range_a.contains(&b.0) || range_a.contains(&b.1) ||
+        range_b.contains(&a.0) || range_b.contains(&a.1)
+    })
+    .count() as i32
+}
+
+fn split_string(x: Vec<String>) -> Vec<(i32, i32)> {
+  x
+    .iter()
+    .map(|x| {
+      let pair: Vec<&str> = x.split("-").collect();
+      (pair[0].parse::<i32>().unwrap(),
+      pair[1].parse::<i32>().unwrap())
+    })
+    .collect()
+}
+
 // Macro to generate exports.
 // This ensures exported functions are registered with R.
 // See corresponding C code in `entrypoint.c`.
@@ -290,4 +345,6 @@ extendr_module! {
     fn day_two_b;
     fn day_three_a;
     fn day_three_b;
+    fn day_four_a;
+    fn day_four_b;
 }

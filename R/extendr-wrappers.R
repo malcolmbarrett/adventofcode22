@@ -32,3 +32,11 @@ day_three_a <- function(contents) .Call(wrap__day_three_a, contents)
 #' @export
 day_three_b <- function(contents) .Call(wrap__day_three_b, contents)
 
+#' Calculate the solution to 4-a
+#' @export
+day_four_a <- function(first, second) .Call(wrap__day_four_a, first, second)
+
+#' Calculate the solution to 4-a
+#' @export
+day_four_b <- function(first, second) .Call(wrap__day_four_b, first, second)
+
