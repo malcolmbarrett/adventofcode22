@@ -294,11 +294,8 @@ fn day_four_a(first: Vec<String>, second: Vec<String>) -> i32 {
       let range_a = a.0..a.1+1;
       let range_b = b.0..b.1+1;
 
-      let condition = range_a.contains(&b.0) && range_a.contains(&b.1) ||
-        range_b.contains(&a.0) && range_b.contains(&a.1);
-
-      rprintln!("{condition}: ({:?}, {:?})", a, b);
-      condition
+      range_a.contains(&b.0) && range_a.contains(&b.1) ||
+        range_b.contains(&a.0) && range_b.contains(&a.1)
     })
     .count() as i32
 }
