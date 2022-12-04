@@ -1,5 +1,5 @@
 use extendr_api::prelude::*;
-use polars::prelude::*;
+// use polars::prelude::*;
 
 /// Calculate the solution to 1-a
 /// @export
@@ -173,47 +173,47 @@ fn get_score(x: i32, y: i32) -> i32 {
 
 /// Calculate the solution to 2-a
 /// @export
-#[extendr]
-fn _day_two_a_polars(input: &str) -> i32 {
-  let mut df = CsvReader::from_path(input)
-    .unwrap()
-    .has_header(false)
-    .with_delimiter(32)
-    .finish()
-    .unwrap();
-
-  df.set_column_names(&["theirs", "mine"]);
-
-  df.with_column(
-    df.column("theirs")
-      .unwrap()
-      .utf8()
-      .unwrap()
-      .into_iter()
-      .map(|letter| as_points(letter.unwrap()))
-      .collect::<Series>()
-    );
-
-    df.set_column_names(&["theirs", "mine", "their_score"]);
-
-    df.with_column(
-    df.column("mine")
-      .unwrap()
-      .utf8()
-      .unwrap()
-      .into_iter()
-      .map(|letter| as_points(letter.unwrap()))
-      .collect::<Series>()
-    );
-
-
-    df.set_column_names(&["theirs", "mine", "their_score", "my_score"]);
-
-
-  rprintln!("{df}");
-
-  15
-}
+// #[extendr]
+// fn _day_two_a_polars(input: &str) -> i32 {
+//   let mut df = CsvReader::from_path(input)
+//     .unwrap()
+//     .has_header(false)
+//     .with_delimiter(32)
+//     .finish()
+//     .unwrap();
+//
+//   df.set_column_names(&["theirs", "mine"]);
+//
+//   df.with_column(
+//     df.column("theirs")
+//       .unwrap()
+//       .utf8()
+//       .unwrap()
+//       .into_iter()
+//       .map(|letter| as_points(letter.unwrap()))
+//       .collect::<Series>()
+//     );
+//
+//     df.set_column_names(&["theirs", "mine", "their_score"]);
+//
+//     df.with_column(
+//     df.column("mine")
+//       .unwrap()
+//       .utf8()
+//       .unwrap()
+//       .into_iter()
+//       .map(|letter| as_points(letter.unwrap()))
+//       .collect::<Series>()
+//     );
+//
+//
+//     df.set_column_names(&["theirs", "mine", "their_score", "my_score"]);
+//
+//
+//   rprintln!("{df}");
+//
+//   15
+// }
 
 fn as_points(letter: &str) -> i32 {
   match letter {
@@ -229,6 +229,56 @@ struct Elf {
   calories: Vec<i32>
 }
 
+/// Calculate the solution to 2-b
+/// @export
+#[extendr]
+fn day_three_a(contents: Vec<String>) -> i32 {
+  contents
+    .iter()
+    .map(|content| {
+      let halfway = content.chars().count() / 2;
+      let (first, second) = content.split_at(halfway);
+      for letter in first.chars() {
+        if second.contains(letter) {
+          let mut score = letter.to_owned() as i32;
+          score = score - 96;
+          if score < 0 {
+            score = score + 58;
+          }
+
+          return score
+        }
+      }
+
+      unreachable!()
+    })
+    .sum()
+}
+
+/// Calculate the solution to 2-b
+/// @export
+#[extendr]
+fn day_three_b(contents: Vec<String>) -> i32 {
+  contents
+    .chunks(3)
+    .map(|group| {
+      for letter in group[0].chars() {
+        if group[1].contains(letter) && group[2].contains(letter) {
+          let mut score = letter.to_owned() as i32;
+          score = score - 96;
+          if score < 0 {
+            score = score + 58;
+          }
+
+          return score
+        }
+      }
+
+      unreachable!()
+    })
+    .sum()
+}
+
 // Macro to generate exports.
 // This ensures exported functions are registered with R.
 // See corresponding C code in `entrypoint.c`.
@@ -238,4 +288,6 @@ extendr_module! {
     fn day_one_b;
     fn day_two_a;
     fn day_two_b;
+    fn day_three_a;
+    fn day_three_b;
 }
