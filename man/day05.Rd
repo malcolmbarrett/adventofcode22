@@ -3,12 +3,13 @@
 \name{day05}
 \alias{day05}
 \alias{f05a}
+\alias{f05b}
 \alias{example_data_05}
 \title{Day 05: Supply Stacks}
 \usage{
 f05a(x, cutoff = 8, columns = 9)
 
-f05a(x, cutoff = 8, columns = 9)
+f05b(x, cutoff = 8, columns = 9)
 
 example_data_05(example = 1)
 }

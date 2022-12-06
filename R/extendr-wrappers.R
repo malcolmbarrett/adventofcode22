@@ -48,3 +48,11 @@ day_five_a <- function(stacks, directions) .Call(wrap__day_five_a, stacks, direc
 #' @export
 day_five_b <- function(stacks, directions) .Call(wrap__day_five_b, stacks, directions)
 
+#' Calculate the solution to 6-1
+#' @export
+day_six_a <- function(input) .Call(wrap__day_six_a, input)
+
+#' Calculate the solution to 6-2
+#' @export
+day_six_b <- function(input) .Call(wrap__day_six_b, input)
+

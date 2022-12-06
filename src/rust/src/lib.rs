@@ -409,6 +409,49 @@ fn capture_numbers(text: &String) -> Vec<i32> {
   numbers
 }
 
+/// Calculate the solution to 6-1
+/// @export
+#[extendr]
+fn day_six_a(input: String) -> usize {
+  let mut letters: Vec<&str> = input.split("").collect();
+  letters.remove(0);
+  letters.pop();
+  let mut pattern = String::new();
+  for marker in letters.windows(4) {
+    pattern = marker.concat();
+    let mut marker = marker.to_owned();
+    marker.sort();
+    marker.dedup();
+    if marker.len() == 4 {
+      return input.find(&pattern).unwrap() + 4
+    }
+  }
+
+  unreachable!()
+}
+
+/// Calculate the solution to 6-2
+/// @export
+#[extendr]
+fn day_six_b(input: String) -> usize {
+  let mut letters: Vec<&str> = input.split("").collect();
+  letters.remove(0);
+  letters.pop();
+  let mut pattern = String::new();
+  for marker in letters.windows(14) {
+    pattern = marker.concat();
+    let mut marker = marker.to_owned();
+    marker.sort();
+    marker.dedup();
+    if marker.len() == 14 {
+      return input.find(&pattern).unwrap() + 14
+    }
+  }
+
+  unreachable!()
+}
+
+
 // Macro to generate exports.
 // This ensures exported functions are registered with R.
 // See corresponding C code in `entrypoint.c`.
@@ -424,4 +467,6 @@ extendr_module! {
     fn day_four_b;
     fn day_five_a;
     fn day_five_b;
+    fn day_six_a;
+    fn day_six_b;
 }
