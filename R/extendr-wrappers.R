@@ -40,3 +40,11 @@ day_four_a <- function(first, second) .Call(wrap__day_four_a, first, second)
 #' @export
 day_four_b <- function(first, second) .Call(wrap__day_four_b, first, second)
 
+#' Calculate the solution to 5-a
+#' @export
+day_five_a <- function(stacks, directions) .Call(wrap__day_five_a, stacks, directions)
+
+#' Calculate the solution to 5-b
+#' @export
+day_five_b <- function(stacks, directions) .Call(wrap__day_five_b, stacks, directions)
+

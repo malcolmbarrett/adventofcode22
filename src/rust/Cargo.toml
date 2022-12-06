@@ -10,3 +10,4 @@ name = 'adventofcode22'
 [dependencies]
 extendr-api = '*'
 polars = {version = "0.25.1", features = ["lazy"]}
+regex = "1.7.0"

@@ -1,4 +1,5 @@
 use extendr_api::prelude::*;
+use regex::Regex;
 // use polars::prelude::*;
 
 /// Calculate the solution to 1-a
@@ -331,6 +332,83 @@ fn split_string(x: Vec<String>) -> Vec<(i32, i32)> {
     .collect()
 }
 
+/// Calculate the solution to 5-a
+/// @export
+#[extendr]
+fn day_five_a(stacks: List, directions: Vec<String>) -> String {
+  let numbers: Vec<Vec<i32>> = directions
+    .into_iter()
+    .map(|x| capture_numbers(&x))
+    .collect();
+
+  let mut stacks: Vec<Vec<String>> = stacks
+    .into_iter()
+    .map(|x| x.1.as_string_vector().unwrap())
+    .map(|x| x.into_iter().filter(|y| y != "NA").rev().collect())
+    .collect();
+
+  for direction in numbers.iter() {
+    for _ in 0..direction[0] {
+      let moved_box = stacks[direction[1] as usize].pop().unwrap();
+      stacks[direction[2] as usize].push(moved_box);
+    }
+  }
+
+  let mut top_boxes = String::new();
+
+  for mut stack in stacks {
+    let top_box = stack.pop().unwrap();
+    top_boxes.push_str(&top_box);
+  }
+
+  top_boxes
+}
+
+/// Calculate the solution to 5-b
+/// @export
+#[extendr]
+fn day_five_b(stacks: List, directions: Vec<String>) -> String {
+  let numbers: Vec<Vec<i32>> = directions
+    .into_iter()
+    .map(|x| capture_numbers(&x))
+    .collect();
+
+  let mut stacks: Vec<Vec<String>> = stacks
+    .into_iter()
+    .map(|x| x.1.as_string_vector().unwrap())
+    .map(|x| x.into_iter().filter(|y| y != "NA").rev().collect())
+    .collect();
+
+  for direction in numbers.iter() {
+    let index = stacks[direction[1] as usize].len() - (direction[0] as usize);
+    let mut moved_boxes = stacks[direction[1] as usize]
+      .split_off(index);
+
+    stacks[direction[2] as usize].append(&mut moved_boxes);
+  }
+
+  let mut top_boxes = String::new();
+
+  for mut stack in stacks {
+    let top_box = stack.pop().unwrap();
+    top_boxes.push_str(&top_box);
+  }
+
+  top_boxes
+}
+
+fn capture_numbers(text: &String) -> Vec<i32> {
+  let pattern = Regex::new(r"move (\d+) from (\d+) to (\d+)").unwrap();
+  let mut numbers = Vec::new();
+  let caps = pattern.captures(text).unwrap();
+
+  numbers.push(caps.get(1).map_or("", |m| m.as_str()).parse::<i32>().unwrap());
+  numbers.push(caps.get(2).map_or("", |m| m.as_str()).parse::<i32>().unwrap() - 1);
+  numbers.push(caps.get(3).map_or("", |m| m.as_str()).parse::<i32>().unwrap() - 1);
+
+  numbers
+}
+
 // Macro to generate exports.
 // This ensures exported functions are registered with R.
 // See corresponding C code in `entrypoint.c`.
@@ -344,4 +422,6 @@ extendr_module! {
     fn day_three_b;
     fn day_four_a;
     fn day_four_b;
+    fn day_five_a;
+    fn day_five_b;
 }
