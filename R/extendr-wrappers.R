@@ -56,3 +56,19 @@ day_six_a <- function(input) .Call(wrap__day_six_a, input)
 #' @export
 day_six_b <- function(input) .Call(wrap__day_six_b, input)
 
+#' Calculate the solution to 7-1
+#' @export
+day_seven_a <- function(input) .Call(wrap__day_seven_a, input)
+
+#' Calculate the solution to 7-2
+#' @export
+day_seven_b <- function(input) .Call(wrap__day_seven_b, input)
+
+#' Calculate the solution to 10-1
+#' @export
+day_ten_a <- function(input, indices) .Call(wrap__day_ten_a, input, indices)
+
+#' Calculate the solution to 10-2
+#' @export
+day_ten_b <- function(input) .Call(wrap__day_ten_b, input)
+
